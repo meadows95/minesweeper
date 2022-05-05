@@ -21,6 +21,7 @@ DISTANCE_BETWEEN_CELLS = 8
 # Initialize pygame
 pygame.init()
 
+
 BIG_FONT = pygame.font.Font(None, 80)
 SMALL_FONT = pygame.font.Font(None, 45)
 CELL_FONT = pygame.font.SysFont('Arial', 24)
