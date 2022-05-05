@@ -30,7 +30,6 @@ END_OF_GAME_FONT = pygame.font.SysFont('Arial', 80, bold=True)
 video_infos = pygame.display.Info()
 width, height = video_infos.current_w, video_infos.current_h
 screen = pygame.display.set_mode((width, height), pygame.RESIZABLE)
-# w, h = pygame.display.get_surface().get_size()
 
 # Set title of screen
 pygame.display.set_caption("Minesweeper")
