@@ -7,3 +7,5 @@ To run this project, the following software must be installed on your machine:
 pip install pygame
 ```
 ![you lose](https://i.giphy.com/media/xXugqNXEHzPJiOUIQ0/giphy.webp)
+
+![you won](https://i.giphy.com/I579K6evMUCpsrJubQ.gif)
