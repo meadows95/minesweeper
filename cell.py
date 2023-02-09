@@ -1,13 +1,6 @@
 import math
 import pygame
-
-BLACK = (0, 0, 0)
-#light grey
-CELL_COLOR_HIDDEN = (200, 201, 201)
-#dark grey
-CELL_COLOR_NOT_HIDDEN = (169, 169, 169)
-HIDDEN_BORDER_COLOR_LIGHT = (249, 248, 246)
-HIDDEN_BORDER_COLOR_DARK = (108, 108, 108)
+from colors import *
  
 # This sets the margin between each cell
 DISTANCE_BETWEEN_CELLS = 8
@@ -15,8 +8,8 @@ DISTANCE_BETWEEN_CELLS = 8
 class Cell():
     # properties: data type
     # hidden: boolean
-    # x value: int
-    # y value: int
+    # x: int
+    # y: int
     # occupant value: string (0, 1, 2, '3', or 'M')
 
     def __init__(self, x, y):
@@ -24,7 +17,6 @@ class Cell():
         self.y = y
         self.hidden = True
         self.occupant = None
-        #should other properties be parameters of __init__?
 
     def draw(self, screen, screen_width, screen_height, font, grid_length):
         if self.hidden == True:

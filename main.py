@@ -4,23 +4,17 @@ import time
 from re import X
 from tracemalloc import reset_peak
 import pygame
-from cell import Cell
 from grid import Grid
-
-# Define possible colors
-BLACK = (0, 0, 0)
-WHITE = (255, 255, 255)
-DARKGREEN = (34, 69, 36)
+from colors import *
 
 current_time = None
 start_time = None
- 
+
 # This sets the margin between each cell
 DISTANCE_BETWEEN_CELLS = 8
 
 # Initialize pygame
 pygame.init()
-
 
 BIG_FONT = pygame.font.Font(None, 80)
 SMALL_FONT = pygame.font.Font(None, 45)
@@ -45,6 +39,7 @@ clock = pygame.time.Clock()
 
 game_grid = Grid(10)
 
+
 def display_end_game_text(screen, screen_width, screen_height, did_player_win):
     end_of_game_text_options = "You won!" if did_player_win else "You lose!"
     end_of_game_text = BIG_FONT.render(end_of_game_text_options, 13, BLACK)
@@ -55,7 +50,7 @@ def display_end_game_text(screen, screen_width, screen_height, did_player_win):
     text_restart_prompt_height = restart_prompt.get_height()
 
     restart_prompt_x_position = screen_width / 2 - text_width / 2
-    restart_prompt_y_position =  screen_height / 2 - text_height / 2 + text_height
+    restart_prompt_y_position = screen_height / 2 - text_height / 2 + text_height
 
     textx_position = screen_width / 2 - text_width / 2
     texty_position = screen_height / 2 - text_height / 2
@@ -65,12 +60,14 @@ def display_end_game_text(screen, screen_width, screen_height, did_player_win):
     background_x = textx_position - background_margin
     background_y = texty_position - background_margin
     background_width = text_width + (background_margin * 2)
-    background_height = text_height + (background_margin * 2) + text_restart_prompt_height
+    background_height = text_height + \
+        (background_margin * 2) + text_restart_prompt_height
     restart_prompt_width = restart_prompt.get_width()
 
     # Draw white background
-    pygame.draw.rect(screen, WHITE, ((background_x, background_y), (background_width, background_height)))
-    
+    pygame.draw.rect(screen, WHITE, ((background_x, background_y),
+                     (background_width, background_height)))
+
     # Draw play again text
     screen.blit(end_of_game_text, (textx_position, texty_position))
 
@@ -78,10 +75,10 @@ def display_end_game_text(screen, screen_width, screen_height, did_player_win):
     restart_prompt_y_position = texty_position + text_height
 
     # Draw restart text
-    screen.blit(restart_prompt, (restart_prompt_x_position, restart_prompt_y_position))
+    screen.blit(restart_prompt, (restart_prompt_x_position,
+                restart_prompt_y_position))
 
 def reset_game():
-    # marks the variables as being in the global scope instead of local to the function
     global game_grid
     global mine_clicked
     global has_started_stopwatch
@@ -97,23 +94,27 @@ def display_stopwatch():
         time_elapsed = round(win_lose_time - start_time, 1)
     else:
         time_elapsed = round(current_time - start_time, 1)
-    
-    stopwatch_title = SMALL_FONT.render('Time: ' + str(time_elapsed), False, WHITE)
-     # Draw stopwatch text
+
+    stopwatch_title = SMALL_FONT.render(
+        'Time: ' + str(time_elapsed), False, WHITE)
+    # Draw stopwatch text
     stopwatch_position = (10, 10)
     screen.blit(stopwatch_title, stopwatch_position)
+
 
 # -------- Main Program Loop -----------
 while not done:
     current_time = time.time()
     screen_width, screen_height = pygame.display.get_surface().get_size()
-    cell_side_length = (screen_height // game_grid.length) - DISTANCE_BETWEEN_CELLS
-    width_of_grid = cell_side_length * game_grid.length + ((game_grid.length - 1) * DISTANCE_BETWEEN_CELLS)
+    cell_side_length = (screen_height // game_grid.length) - \
+        DISTANCE_BETWEEN_CELLS
+    width_of_grid = cell_side_length * game_grid.length + \
+        ((game_grid.length - 1) * DISTANCE_BETWEEN_CELLS)
     margin = math.floor((screen_width - width_of_grid) / 2)
 
     for event in pygame.event.get():  # User did something
         if event.type == pygame.QUIT:  # If user clicked close
-            done = True  # Flag that we are done so we exit this loop
+            done = True
 
         elif event.type == pygame.MOUSEBUTTONDOWN:
             # User clicks the mouse. Get the position
@@ -121,16 +122,17 @@ while not done:
             x_pixels = pos[0]
             y_pixels = pos[1]
             # Change the x/y screen coordinates to grid coordinates
-            cell_x =  (x_pixels - margin) // (cell_side_length + DISTANCE_BETWEEN_CELLS)
+            cell_x = (x_pixels - margin) // (cell_side_length +
+                                             DISTANCE_BETWEEN_CELLS)
             cell_y = y_pixels // (cell_side_length + DISTANCE_BETWEEN_CELLS)
-            clicked_cell = game_grid.find_cell_by_x_and_y_grid_coordinates(cell_x, cell_y)
+            clicked_cell = game_grid.find_cell_by_x_and_y_grid_coordinates(
+                cell_x, cell_y)
 
             # Set clicked_cell hidden value to false
             if clicked_cell != None and not mine_clicked and not game_grid.did_player_win():
                 if not has_started_stopwatch:
                     has_started_stopwatch = True
                     start_time = time.time()
-                    # do whatever to start the stopwatch
                 clicked_cell.hidden = False
 
                 if clicked_cell.occupant == "0":
@@ -142,12 +144,13 @@ while not done:
             if event.key == pygame.K_r:
                 if mine_clicked or game_grid.did_player_win():
                     reset_game()
- 
+
     # Set the screen background
     screen.fill(DARKGREEN)
 
     for cell in game_grid.cells:
-        cell.draw(screen, screen_width, screen_height, CELL_FONT, game_grid.length)
+        cell.draw(screen, screen_width, screen_height,
+                  CELL_FONT, game_grid.length)
 
     if mine_clicked:
         display_end_game_text(screen, screen_width, screen_height, False)
@@ -164,8 +167,8 @@ while not done:
 
     # Limit to 60 frames per second
     clock.tick(30)
- 
-    # Go ahead and update the screen with what we've drawn.
+
+    # Update the screen with latest changes
     pygame.display.flip()
 
 

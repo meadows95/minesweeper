@@ -5,16 +5,14 @@ from cell import Cell
 class Grid():
     # properties:
     # cells: list
+    # length: int
 
     def __init__(self, length):
         self.cells = []
         self.length = length
-        #list of cells used to make the grid
         for y in range(self.length):
             for x in range(self.length):
-                #create new instance of the cell class with every x and y value in the range
                 cell = Cell(x, y)
-                #add new cell to list of cells
                 self.cells.append(cell)
         self.place_mines()
         self.populate_grid()
@@ -68,14 +66,11 @@ class Grid():
                 neighbors.append(possible_neighbor_cell)
         return neighbors
 
-#how many spaces/open lines between methods?
-
     def print_grid(self):
         for cell in self.cells:
             if cell.x == (self.length - 1):
                 print(cell.occupant)
             else: 
-                #when adding (end = "") as a parameter, it will print on the same line 
                 print(cell.occupant + " ", end = "")
     
     def count_mines(self):
